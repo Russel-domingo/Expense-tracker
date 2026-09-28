@@ -29,7 +29,8 @@ function App() {
         return expenses.filter((expense) => expense.category === selected);
     }
   }
-  const totalExpense = expenses.reduce((expense, currentExpense) => {
+
+  const totalExpense = filteredCategory().reduce((expense, currentExpense) => {
     return expense + currentExpense.amount;
   }, 0);
 
