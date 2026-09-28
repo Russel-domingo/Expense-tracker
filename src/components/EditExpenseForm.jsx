@@ -1,54 +1,55 @@
 import { useState } from "react";
 
+function EditExpenseForm (props) {
 
-function ExpenseForm(props) {
+    const [description, setDescription] = useState(props.expense.description);
+    const [amount, setAmount] = useState(props.expense.amount);
+    const [category, setCategory] = useState(props.expense.category);
+    const [date, setDate] = useState(props.expense.date);
 
-    const [description, setDescription] = useState('');
-    const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('Food');
-    const [date, setDate] = useState('');
 
-    const handleSubmit = (event) => {
+    function handleSubmit(event) {
         event.preventDefault();
 
-        props.onAddExpenses({
-            id: crypto.randomUUID(),
+        const updatedExpense = {
             description: description,
             amount: Number(amount),
             category: category,
             date: date
-        });
-        
-       setDescription('');
-       setAmount('');
-       setCategory('Food');
-       setDate('');
+        }
 
+        props.onUpdateExpense(
+            props.expense.id,
+            updatedExpense
+        )
     }
+
     return(
-        <div className="expense-form-container">
+        <div>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="description">Description</label>
                 <input 
                     type="text" 
-                    name="description" 
+                    name="description"
                     id="description"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                 />
+
                 <label htmlFor="amount">Amount</label>
                 <input 
                     type="number" 
-                    name="amount"
-                    id="amount"
+                    name="amount" 
+                    id="amount" 
                     value={amount}
                     onChange={(event) => setAmount(event.target.value)}
                 />
+
                 <label htmlFor="category">Category</label>
                 <select 
-                    name="category"
-                    value={category}
-                    id="category"
+                    name="category" 
+                    id="category" 
+                    value={category} 
                     onChange={(event) => setCategory(event.target.value)}
                 >
                     <option value="Food">Food</option>
@@ -59,8 +60,9 @@ function ExpenseForm(props) {
                     <option value="Healthcare">Healthcare</option>
                     <option value="Education">Education</option>
                     <option value="Personal">Personal</option>
-                    <option value="Others">Others</option>
+                    <option value="Others">Others</option>   
                 </select>
+                
                 <label htmlFor="date">Date</label>
                 <input 
                     type="date" 
@@ -68,11 +70,13 @@ function ExpenseForm(props) {
                     id="date"
                     value={date}
                     onChange={(event) => setDate(event.target.value)}
-                />
-                <button type="submit">Add Expenses</button>
-                
+                /> 
+                <button type="submit">Update expense</button>
+                <button type="button" onClick={() => props.onCancelEdit()}>Cancel</button>
             </form>
         </div>
     );
+    
 }
-export default ExpenseForm;
+
+export default EditExpenseForm;

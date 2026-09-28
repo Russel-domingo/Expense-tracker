@@ -2,10 +2,12 @@ import { useState } from 'react'
 import './App.css'
 import ExpenseForm from './components/ExpenseForm';
 import ExpensesList from './components/ExpensesList';
+import EditExpenseForm from './components/EditExpenseForm';
 
 function App() {
   const [expenses, setExpenses] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [editingExpenses, setEditingExpenses] = useState(null);
 
   const categories = [
     'All',
@@ -20,6 +22,10 @@ function App() {
     'Others'
   ];
 
+  const totalExpense = filteredCategory().reduce((expense, currentExpense) => {
+    return expense + currentExpense.amount;
+  }, 0);
+
   function filteredCategory() {
     let selected = selectedCategory;
 
@@ -30,9 +36,14 @@ function App() {
     }
   }
 
-  const totalExpense = filteredCategory().reduce((expense, currentExpense) => {
-    return expense + currentExpense.amount;
-  }, 0);
+  function cancelEdit() {
+    setEditingExpenses(null)
+  }
+
+  function startEditing(expenses) {
+    setEditingExpenses(expenses);
+  }
+
 
   function addExpenses(expense) {
     setExpenses((currentExpenses) => {
@@ -45,10 +56,25 @@ function App() {
         return currentExpenses.filter((expense) => expense.id !== id);
     })
   }
+
+  function updateExpense(id, updatedExpense) {
+    setExpenses((currentExpenses) => {
+        return currentExpenses.map((expense) => {
+            if (expense.id === id) { 
+                return {...expense, ...updatedExpense};
+            }
+            return expense;
+        });
+    });
+
+    setEditingExpenses(null);
+  }
   return (
     <div>
         <h1>Expense Tracker</h1>
         <ExpenseForm onAddExpenses={addExpenses}/>
+        {editingExpenses && 
+            (<EditExpenseForm expense={editingExpenses} onCancelEdit={cancelEdit} onUpdateExpense={updateExpense}/>)}
 
         <h1>Total Expenses: {totalExpense}</h1>
 
@@ -63,7 +89,11 @@ function App() {
             })}
         </select>
         <h1>Expenses</h1>
-        <ExpensesList expenses={filteredCategory()} onDeleteExpenses={deleteExpense}/>
+        <ExpensesList 
+            expenses={filteredCategory()} 
+            onDeleteExpenses={deleteExpense}
+            onEditExpenses={startEditing}
+            />
     </div>
   );
 

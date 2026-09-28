@@ -4,6 +4,8 @@ function ExpensesList(props) {
         <li key={expense.id}>
             {expense.description} - ₱{expense.amount} - {expense.category} - {expense.date}
             <button onClick={() => props.onDeleteExpenses(expense.id)}>Delete</button>
+
+            <button onClick={() => props.onEditExpenses(expense)}>Edit</button>
         </li>        
     );
 
