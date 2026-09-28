@@ -70,8 +70,12 @@ function App() {
     setEditingExpenses(null);
   }
   return (
-    <div>
-        <h1>Expense Tracker</h1>
+    <div className='app-container'>
+        <div className='heading'>
+          <h1>Expense Tracker</h1>
+        </div>
+        
+
         <ExpenseForm onAddExpenses={addExpenses}/>
         {editingExpenses && 
             (<EditExpenseForm expense={editingExpenses} onCancelEdit={cancelEdit} onUpdateExpense={updateExpense}/>)}
@@ -96,7 +100,6 @@ function App() {
             />
     </div>
   );
-
 }
 
 export default App
