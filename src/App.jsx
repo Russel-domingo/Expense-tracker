@@ -6,6 +6,10 @@ import ExpensesList from './components/ExpensesList';
 function App() {
   const [expenses, setExpenses] = useState([]);
 
+  const totalExpense = expenses.reduce((expense, currentExpense) => {
+    return expense + currentExpense.amount;
+  }, 0);
+    
   function addExpenses(expense) {
     setExpenses((currentExpenses) => {
         return [...currentExpenses, expense]
@@ -14,14 +18,16 @@ function App() {
 
   function deleteExpense(id){
     setExpenses((currentExpenses) => {
-        return currentExpenses.filter((expense) => expense.id != id);
+        return currentExpenses.filter((expense) => expense.id !== id);
     })
   }
   return (
     <div>
         <h1>Expense Tracker</h1>
         <ExpenseForm onAddExpenses={addExpenses}/>
-    
+
+        <h1>Total Expenses: {totalExpense}</h1>
+
         <h1>Expenses</h1>
         <ExpensesList expenses={expenses} onDeleteExpenses={deleteExpense}/>
     </div>
