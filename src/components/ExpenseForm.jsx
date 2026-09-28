@@ -12,6 +12,7 @@ function ExpenseForm(props) {
         event.preventDefault();
 
         props.onAddExpenses({
+            id: crypto.randomUUID(),
             description: description,
             amount: Number(amount),
             category: category,
