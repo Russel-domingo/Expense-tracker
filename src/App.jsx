@@ -5,11 +5,34 @@ import ExpensesList from './components/ExpensesList';
 
 function App() {
   const [expenses, setExpenses] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
+  const categories = [
+    'All',
+    'Food',
+    'Transportation',
+    'Bills',
+    'Shopping',
+    'Entertainment',
+    'Healthcare',
+    'Education',
+    'Personal',
+    'Others'
+  ];
+
+  function filteredCategory() {
+    let selected = selectedCategory;
+
+    if(selected === 'All') {
+        return expenses;
+    } else {
+        return expenses.filter((expense) => expense.category === selected);
+    }
+  }
   const totalExpense = expenses.reduce((expense, currentExpense) => {
     return expense + currentExpense.amount;
   }, 0);
-    
+
   function addExpenses(expense) {
     setExpenses((currentExpenses) => {
         return [...currentExpenses, expense]
@@ -28,8 +51,18 @@ function App() {
 
         <h1>Total Expenses: {totalExpense}</h1>
 
+        <select 
+            name="category" 
+            id="category" 
+            value={selectedCategory} 
+            onChange={(event) => setSelectedCategory(event.target.value)}
+        >
+            {categories.map((category) => {
+                return <option key={category} value={category}> {category}</option>
+            })}
+        </select>
         <h1>Expenses</h1>
-        <ExpensesList expenses={expenses} onDeleteExpenses={deleteExpense}/>
+        <ExpensesList expenses={filteredCategory()} onDeleteExpenses={deleteExpense}/>
     </div>
   );
 

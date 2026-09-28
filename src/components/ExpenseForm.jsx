@@ -21,7 +21,7 @@ function ExpenseForm(props) {
         
        setDescription('');
        setAmount('');
-       setCategory('');
+       setCategory('Food');
        setDate('');
 
     }
